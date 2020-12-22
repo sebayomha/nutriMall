@@ -1,0 +1,53 @@
+.mat-snack-bar-container {
+    margin-bottom: 10px !important;
+    font-size: 15px !important;
+    padding: 8px !important;
+    width: 600px;
+    max-width: 100%;
+    margin: 10px !important;
+}
+
+.message {
+    margin-bottom: 0px;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.infoIcon {
+    color: white;
+    font-size: 30px;
+    margin-left: 11px;
+}
+
+.error {
+    background: #b51919 !important;
+}
+
+.successIcon {
+    margin-left: 10px !important;
+}
+
+.success {
+    background: #439f82 !important;
+}
+
+.message {
+    position: relative;
+    bottom: -2px;
+    padding-left: 0px;
+    color: white;
+}
+
+@media (max-width: 767px) { 
+    .message {
+        position: static;
+        padding-left: 10px;
+    }
+
+    .infoIcon {
+        margin-left: 0px;
+        padding-left: 10px;
+    }
+}

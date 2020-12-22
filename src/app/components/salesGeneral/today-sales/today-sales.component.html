@@ -1,0 +1,246 @@
+<mat-sidenav-container style="height: 100%;" #matSideNavContainer (backdropClick)="matSideNavContainer.close()">
+  <mat-sidenav (keydown.escape)="matSideNavContainer.close()">
+    <mat-card-header>
+      <mat-card-subtitle>Detalle de venta</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+    <div>
+      <mat-list class="col-12">
+
+        <mat-list-item>
+          <mat-icon matListIcon>phone</mat-icon>
+          <p matLine>
+            <span>{{detailedSale.sexo}}</span>
+          </p>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+          <mat-icon matListIcon>cake</mat-icon>                    
+          <p matLine>
+            <span>{{detailedSale.sexo}}</span>
+          </p>
+        </mat-list-item>
+        
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+          <mat-icon matListIcon>wc</mat-icon> 
+          <p matLine>
+            <span>{{detailedSale.sexo}}</span>
+          </p>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+          <mat-icon matListIcon>schedule</mat-icon>                    
+          <p matLine>
+            <span>{{detailedSale.sexo}}</span>
+          </p>
+        </mat-list-item>
+
+      </mat-list>
+      </div>
+    </mat-card-content>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <!-- Cards de facturacion y montos -->
+    <div class="container-fluid" style="margin-top: 15px;" id="zeroStep">
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <div id="cornerCard"><mat-icon>assessment</mat-icon></div>
+          <mat-card style="height: 100%;">
+            <div id="facturacionNeta" class="col-12">
+              <div class="leftContainer">
+                <mat-card-header>$10,350.00</mat-card-header>
+                <mat-card-subtitle>Facturación bruta</mat-card-subtitle>
+              </div>
+              <div class="rightContainer">
+                <span>
+                  <mat-icon class="arrowIcon">arrow_downward</mat-icon>45.33%
+                </span>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-4 topSpace">
+          <div id="cornerCard"><mat-icon>assessment</mat-icon></div>
+          <mat-card style="height: 100%;">
+            <div id="facturacionNeta" class="col-12">
+              <div class="leftContainer">
+                <mat-card-header>$10,350.00</mat-card-header>
+                <mat-card-subtitle>Facturación neta</mat-card-subtitle>
+              </div>
+              <div class="rightContainer">
+                <span>
+                  <mat-icon class="arrowIcon">arrow_upward</mat-icon>45.33%
+                </span>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-4 topSpace">
+          <div id="cornerCard"><mat-icon>assessment</mat-icon></div>
+          <mat-card style="height: 100%;">
+            <div id="facturacionNeta" class="col-12">
+              <div class="leftContainer">
+                <mat-card-header>$10,350.00</mat-card-header>
+                <mat-card-subtitle>Ganancia neta</mat-card-subtitle>
+              </div>
+              <div class="rightContainer">
+                <span>
+                  <mat-icon class="arrowIcon">arrow_upward</mat-icon>45.33%
+                </span>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" style="margin-top: 15px;" id="firstStep">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>Listado de todas las ventas del día <span *ngIf="ventasDelDia.length">({{ventasDelDia.length}} ventas)</span></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <!-- Listado de ventas del día -->
+              <div class="container-fluid noPaddingLeftRight">
+                <div class="row">
+                  <div id="ventasdelDiaContainer" class="col-12">
+                    <div class="mat-elevation-z1 todaySalesTableContainer">
+                      <mat-table id="todaySalesTable" [dataSource]="ventasDelDia" *ngIf="ventasDelDia.length">
+                        <!-- IdVenta Column -->
+                        <ng-container matColumnDef="Idventa">
+                          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                          <mat-cell *matCellDef="let venta"> #{{venta.idVenta}} </mat-cell>
+                          <mat-footer-cell *matFooterCellDef>  </mat-footer-cell>
+                        </ng-container>
+        
+                        <!-- PrecioTotal Column -->
+                        <ng-container matColumnDef="PrecioTotal">
+                          <mat-header-cell *matHeaderCellDef> Monto total </mat-header-cell>
+                          <mat-cell *matCellDef="let venta"> {{venta.montoTotalVenta | currency}} </mat-cell>
+                          <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+                        </ng-container>
+        
+                        <!-- CantProds Column -->
+                        <ng-container matColumnDef="CantProds">
+                          <mat-header-cell *matHeaderCellDef> Productos </mat-header-cell>
+                          <mat-cell *matCellDef="let venta"> {{venta.productos.length}} </mat-cell>
+                          <mat-footer-cell *matFooterCellDef>  </mat-footer-cell>
+                        </ng-container>
+        
+                        <!-- Date Column -->
+                        <ng-container matColumnDef="Date">
+                          <mat-header-cell *matHeaderCellDef> Hora </mat-header-cell>
+                          <mat-cell *matCellDef="let venta"> {{venta.date | date: 'HH:mm'}} </mat-cell>
+                          <mat-footer-cell *matFooterCellDef>  </mat-footer-cell>
+                        </ng-container>
+
+                        <!-- Accion Column -->
+                        <ng-container matColumnDef="Accion">
+                          <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+                          <mat-cell *matCellDef="let venta">
+                            <mat-icon class="trash marginRight10" (click)="eliminarVenta(venta)" title="Eliminar venta">delete</mat-icon>
+                            <mat-icon class="trash" (click)="editarVenta(venta)" title="Editar venta">edit</mat-icon>
+                          </mat-cell>
+                          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                        </ng-container>
+                        
+                        <!-- Footer Column -->
+                        <ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns;" (click)="showDetailedSale(row); matSideNavContainer.open();"></mat-row>
+                          <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+                        </ng-container>
+                      </mat-table>
+              
+                      <ng-container *ngIf="!ventasDelDia.length">
+                        <p>There is no data for this filter</p>
+                      </ng-container>
+              
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-12 col-md-6 topSpace">
+          <mat-card style="height: 100%;">
+            <div id="ventasdelDiaContainerGraph" style="height: 100%;" class="col-12">
+              <div id="piechart_3d" style="width: 100%; height: 100%;"></div>
+            </div>
+          </mat-card>
+          </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" style="margin-top: 15px; margin-bottom: 15px;" id="secondStep">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <mat-card style="height: 100%;">
+            <div id="ventasdelDiaContainerGraph1" class="col-12">
+                <div id="curve_chart" style="width: 100%; height: 100%"></div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-4 topSpace">
+          <mat-card style="height: 100%;">
+            <div id="ventasdelDiaContainerGraph2" class="col-12">
+              <div id="chart_div" style="width: 100%; height: 100%"></div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos generales -->
+    <div class="container-fluid" style="margin-top: 15px; margin-bottom: 15px;" id="fourthStep">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <mat-card style="height: 100%; padding: 0 !important;">
+            <div id="graficoGenero">
+              <div id="donutchart" style="width: 100%; height: 100%;"></div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-3 topSpace">
+          <mat-card style="height: 100%;">
+            <div id="graficoTicketPromedio">
+              <mat-card-header>$10,350.00</mat-card-header>
+              <mat-card-subtitle>Ticket promedio</mat-card-subtitle>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-3 topSpace">
+          <mat-card style="height: 100%; padding: 0 !important;">
+            <div id="graficoMedioPago">
+              <div id="donutchart2" style="width: 100%; height: 100%;"></div>
+            </div>
+          </mat-card>
+        </div>
+
+        <div class="col-12 col-md-3 topSpace">
+          <mat-card style="height: 100%; padding: 0 !important;">
+            <div id="graficoProductosMenosVendidos">
+              <div id="columnchart_values" style="width: 100%; height: 100%;"></div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

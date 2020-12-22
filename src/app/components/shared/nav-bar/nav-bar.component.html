@@ -1,0 +1,57 @@
+<!-- Desktop menu -->
+<mat-toolbar class="d-none d-md-block" style="background: #e6d7a4cf;
+color: #4f832e;">
+  <mat-toolbar-row>
+    <img routerLink="sales" style="cursor: pointer;" class="navbarIcon" src="../../../../assets/img/nutriMall.png" alt="NutriMall">
+    <span>NutriMall</span>
+    <span class="spacer"></span>
+    <mat-nav-list class="horizontalNavlist" style="height: 100%;">
+        <mat-list-item class="navListItem" mat-list-item [routerLinkActive]="['active']">
+          <div class="borderNav">
+            <mat-icon>add_shopping_cart</mat-icon>
+            <span class="nav-link" routerLink="sales">Ventas</span>
+          </div>
+        </mat-list-item>
+<!--         <mat-list-item mat-list-item routerLink=".">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Estadísticas</span>
+        </mat-list-item> -->
+        <mat-list-item (click)="logout()" mat-list-item>
+          <div class="borderNav">
+            <mat-icon>exit_to_app</mat-icon>
+            <span class="nav-link">Salir</span>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Mobile menu -->
+<div class="d-md-none" id="mobileNavbar">
+  <mat-toolbar color="primary"  style="background: #e6d7a4cf;
+  color: #4f832e;">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.toggle(); focusSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <img mat-card-image routerLink="sales" class="navbarIconMobile" style="cursor:pointer; margin-right: 10px;" src="../../../../assets/img/nutriMall.png" alt="NutriMall">
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav class="sidenavList" id="sarasa" #sidenav role="navigation" (blur)="sidenav.close();" [autoFocus]="true" tabindex="1">
+    <mat-nav-list style="height: 100%;">
+      <mat-list-item mat-list-item [routerLinkActive]="['active']" (click)="sidenav.close();">
+        <mat-icon>add_shopping_cart</mat-icon>
+        <span class="nav-link" routerLink="sales">Ventas</span>
+      </mat-list-item>
+      <div class="bottomItem">
+        <mat-divider></mat-divider>
+        <mat-list-item mat-list-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span class="nav-link">Salir</span>
+        </mat-list-item>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+</div>

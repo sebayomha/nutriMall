@@ -1,0 +1,9 @@
+<mat-tab-group mat-stretch-tabs (selectedTabChange)="selectedTab($event)" mat-align-tabs="center" headerPosition="above">
+  <mat-tab label="Nueva venta"></mat-tab>
+  <mat-tab label="Ventas del día"></mat-tab>
+</mat-tab-group>
+
+<div style="height: calc(100% - 104px);" [ngSwitch]="action">
+  <app-sales *ngSwitchCase="'nuevaVenta'"></app-sales>
+  <app-today-sales *ngSwitchCase="'todaySales'"></app-today-sales>
+</div>

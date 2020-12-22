@@ -1,0 +1,160 @@
+<div id="salesContent" class="container-fluid">
+  <div id="productContent" style="height: 100%;" class="row">
+
+    <mat-horizontal-stepper linear #stepper>
+      <mat-step>
+        <form style="text-align: center;">
+          <ng-template matStepLabel>Agregar productos</ng-template>
+          
+          <mat-accordion>
+            <mat-expansion-panel class="firstExpansionPanel" #firstPanel hideToggle [expanded]="panelOpenState" disabled>
+              <mat-expansion-panel-header [expandedHeight]="'160px'" [collapsedHeight]="'68px'">
+                <mat-panel-title style="width: 100%;">
+                  <form #busquedaCodigoForm="ngForm" (submit)="busquedaCodigoForm.valid && buscarCodigo()">
+                    <div id="busquedaFormContainer">
+                      <mat-form-field style="width: 50%;" >
+                        <mat-label>Ingrese el código de barras</mat-label>
+                        <input (paste)="automaticSearchBarcode($event)" (change)="dtUserInput()" (keypress)="isUserInput()" (keydown.enter)="searchButton.click()" (keydown)="preventNewWindow($event)" (keyup)="formatInput($event)" minlength="15" maxlength="15" [ngModel]="barcode | barcode" 
+                              (ngModelChange)="barcode=$event" name="barcode" #barcodeInput2 #barcodeInput="ngModel" matInput required>
+                        <mat-error *ngIf="barcodeInput.control.errors?.required">
+                          Debe ingresar un código para realizar la búsqueda.
+                        </mat-error>
+                        <mat-error *ngIf="barcodeInput.control.errors?.minlength">
+                          El código debe tener 13 dígitos.
+                        </mat-error>
+                      </mat-form-field>
+                      <div class="buscarContainer">
+                        <button type="submit" #searchButton class="mat-raised-button buscarInput left">Buscar</button>
+                        <button class="mat-primary buscarInput right" mat-raised-button type="button" (click)="onNext(stepper)">Siguiente</button>
+                      </div>  
+                    </div>
+                  </form>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            
+          
+            <!-- <mat-expansion-panel class="col-12 col-md-4 noPaddingLeftRight" style="margin: 0 auto;" [expanded]="secondPanelExpanded" #secondPanel hideToggle disabled>
+              <mat-expansion-panel-header [expandedHeight]="'10px'">
+                <mat-panel-title>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title style="font-size: 18px;">{{retrievedProduct.nombre}} - ${{retrievedProduct.precio | number}}</mat-card-title>
+                  <mat-card-subtitle style="text-align: left;">{{retrievedProduct.peso != '' ? retrievedProduct.peso: retrievedProduct.unidad + ' unidad'}}</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image *ngIf="retrievedProduct.imgUrl" style="height: 250px;" src="{{retrievedProduct.imgUrl}}" alt="Imagen de producto">
+                <mat-card-content>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                  <button class="mat-warn" mat-button (click)="descartar()">DESCARTAR</button>
+                  <button class="mat-primary" mat-button (click)="agregarProducto()">AGREGAR PRODUCTO</button>
+                </mat-card-actions>
+              </mat-card>
+            </mat-expansion-panel> -->
+          </mat-accordion>
+        </form>
+      </mat-step>
+
+      <mat-step label="Detalle de venta">
+        <form #saleForm="ngForm" (ngSubmit)="saleForm.form.valid && confirmarVenta();" style="margin-top: 68px;" class="row salesForm">
+          <div id="saleFormContent" class="col-12 col-md-6 mat-card">
+            <div class="marginBottom20" id="medioPagoCointainer">
+              <mat-radio-group class="salesInputGroup"
+                [(ngModel)]="medioDePago" name="medioDePago">
+                <mat-radio-button color="primary" *ngFor="let method of methodPayments" [value]="method" required>
+                  {{method.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            
+            <div class="marginBottom20" id="generoContainer">
+              <mat-radio-group class="salesInputGroup"
+                [(ngModel)]="genero" name="genero" required>
+                <mat-radio-button color="primary" value="m">
+                  Mujer
+                </mat-radio-button>
+                <mat-radio-button color="primary" value="h">
+                  Hombre
+                </mat-radio-button>
+                <mat-radio-button color="primary" value="g">
+                  Grupo
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+           
+            <div class="marginBottom20" id="comentarioContainer">
+              <mat-form-field style="width: 100%;">
+                <textarea cdkTextareaAutosize [(ngModel)]="comentario" name="comentario"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5" matInput placeholder="Dejá un comentario (Opcional)"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div id="saleDetails" class="col-12 col-md-6">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title style="font-size: 18px;">Detalle de venta</mat-card-title>
+                <mat-card-subtitle style="text-align: left;">La cantidad de productos corresponde por unidad, no por categoría.</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content class="saleDetailsCardContent">
+                <div>
+                  <span>Cantidad de productos:</span>
+                  <span>{{totalProductosAgregados()}}</span>
+                </div>
+                <mat-divider></mat-divider>
+                <div>
+                  <span>Total en bruto:</span>
+                  <span>${{getTotalCost() | number}}</span>
+                </div>
+                <mat-divider></mat-divider>
+                <div style="display: flex;">
+                  <span>Descuento ({{medioDePago.nombre}}):</span>                  
+                  <mat-icon *ngIf="!isEditingDescuento" (click)="toggleEditing()" matTooltip="Cambiar descuento" style="margin-left: auto; font-size: 17px; cursor: pointer;">edit</mat-icon>
+                  <span *ngIf="!isEditingDescuento">{{medioDePago.porcentajeDescuento}}%</span>
+                  <mat-form-field *ngIf="isEditingDescuento" style="margin-left: auto;">
+                    <mat-label>Nuevo descuento</mat-label>
+                    <input #inputEditDescuento (blur)="editDescuento($event.target.value, medioDePago)" (keydown.enter)="editDescuento($event.target.value, medioDePago);" type="text" matInput value="{{medioDePago.porcentajeDescuento}}">
+                  </mat-form-field>
+                </div>
+                <mat-divider></mat-divider>
+                <div style="font-weight: 500">
+                  <span style="font-size: 20px;">TOTAL A PAGAR:</span>
+                  <span style="font-size: 20px;">${{getTotalNeto() | number}}</span>
+                </div>
+              </mat-card-content>
+              <mat-card-actions align="end" class="respActions">
+                <button class="mat-warn" mat-button (click)="regresar();" matStepperPrevious>REGRESAR</button>
+                <button class="mat-primary" mat-button type="submit">CONFIRMAR VENTA</button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </form> 
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Finalización</ng-template>
+        <div id="contentFinalizacion" class="col-12 col-md-8 offset-md-2" style="text-align: center; margin-top: 68px;">
+          <img mat-card-image style="height: 250px; width: 250px;" src="../../../../assets/img/success4.png" alt="Success">
+          <div id="mensajeExito" style="margin-top: 30px; margin-bottom: 30px;">
+            <span style="color: #b3b2b2; font-weight: 500;">Felicitaciones ! La venta <span style="font-weight: bold;">#{{idVenta}}</span> se ha realizado exitosamente</span>
+          </div>
+          <div>
+            <button mat-raised-button class="col-12 col-md-4" (click)="ventaFinalizada(stepper, busquedaCodigoForm);">REALIZAR OTRA VENTA</button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+  <div class="topButtonContainer" [ngClass]="toggleShake(hasToShake)" *ngIf="stepper.selectedIndex != 2">
+    <button mat-raised-button (click)="openBottomSheet()" matBadge="{{productos.length}}" matBadgeColor="warn">
+      <mat-icon class="respCart">shopping_cart</mat-icon>
+      <span style="margin-left: 10px;" class="noDisplay">Ver productos</span>
+    </button>
+  </div>
+</div>

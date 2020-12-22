@@ -1,0 +1,17 @@
+<div class="snackBar">
+  <div class="row">
+    <div style="margin: auto 0px; width: 8%;">
+      <mat-icon *ngIf="data.code != 0" class="infoIcon">
+        error
+      </mat-icon>
+      <mat-icon *ngIf="data.code == 0" class="infoIcon successIcon">
+        done
+      </mat-icon>
+    </div>
+    <div class="col-11 message">
+      <p class="message" [ngClass]="{'margin-left-10': data.code == 0}">
+        {{data.data}}
+      </p>
+    </div>
+  </div>
+</div>

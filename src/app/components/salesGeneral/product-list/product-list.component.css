@@ -1,0 +1,21 @@
+#headerContainer {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.deleteIcon {
+    float: none; 
+    cursor: pointer;
+}
+
+.deleteIconHover {
+    text-align: center;
+    width: 50px;
+    height: 40px;
+    line-height: 50px;
+}
+
+.deleteIconHover:hover {
+    background: #8080804a;
+    border-radius: 50%;
+}

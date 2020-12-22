@@ -1,0 +1,18 @@
+<div id="headerContainer">
+  <span>
+    Productos total: {{totalProductosAgregados()}} 
+  </span>
+  <span style="float: right;">
+    Precio total: ${{getTotalCost() | number}}
+  </span>
+</div>
+
+<mat-list *ngFor="let product of productos">
+  <a mat-list-item>
+    <span mat-line>{{product.nombre}} x{{product.unidad}} - ${{product.precio | number}}</span>
+    <span class="deleteIconHover" matTooltip="Eliminar producto" (click)="quitarProducto(product)">
+      <mat-icon class="deleteIcon">delete</mat-icon>
+    </span>
+    <span mat-line>{{product.peso ? product.peso : product.unidad + 'unidad'}}</span>
+  </a>
+</mat-list>

@@ -1,0 +1,207 @@
+#salesContent {
+    height: 100%;
+}
+
+#productosAgregadosContainer mat-table mat-footer-cell {
+    font-weight: bold;
+}
+
+#productosAgregadosContainer mat-table .trash{
+    cursor: pointer;
+}
+
+#productContent mat-horizontal-stepper {
+    width: 100%;
+}
+
+#productContent mat-expansion-panel-header {
+    position: relative;
+}
+
+#productContent mat-expansion-panel {
+    box-shadow: none;
+}
+
+#busquedaFormContainer {
+    position: absolute;
+    bottom: 0px; 
+    width: 100%;
+}
+
+.centerExpansionPanel {
+    margin: 0 auto; 
+    width: 40%;
+}
+
+.buscarContainer {
+    display: inline-block;
+}
+
+.buscarInput {
+    position: relative;
+    bottom: 6px;
+    margin-left: 10px;
+}
+
+.topButtonContainer {
+    position: fixed;
+    top: 196px;
+    right: 40px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+.saleDetailsCardContent div {
+    padding-top: 20px;
+    padding-bottom: 3px;
+}
+
+.saleDetailsCardContent div span + span {
+    float: right;
+}
+
+.saleDetailsCardContent mat-divider {
+    left: 25px;
+    width: 93%;
+}
+
+#saleDetails ::ng-deep.mat-card-header-text {
+    margin: 0;
+}
+
+#saleDetails mat-card-title {
+    font-weight: 500 !important;
+}
+
+.salesInputGroup {
+    width: 100%;
+    display: block;
+}
+
+#productContent ::ng-deep .mat-expansion-panel-body {
+    padding: 0px;
+}
+
+@media (max-width: 767px) {
+
+    .left {
+        float: left;
+        margin-left: 0px;
+    }
+
+    .right {
+        float: right;
+    }
+    
+    .buscarContainer {
+        width: 100%;
+    }
+
+    .buscarInput {
+        width: 48%;
+        margin-left: 0px;
+    }
+
+    .topButtonContainer {
+        width: 20px;
+        float: right;
+        top: 164px;
+        right: 20px;
+    }
+
+    .topButtonContainer > button{
+        float: right;
+        border-radius: 100%;
+        width: 40px;
+        min-width: 40px;
+    }
+
+    mat-expansion-panel-header {
+        padding: 0px;
+    }
+
+    #busquedaFormContainer mat-form-field {
+        width: 100% !important;
+    }
+
+    .respCart {
+        position: relative;
+        right: 6px;
+    }
+
+    .noDisplay {
+        display: none;
+    }
+
+    ::ng-deep .mat-step-label {
+        display: none !important;
+    }
+
+    .salesForm {
+        margin-top: 0px !important;
+    }
+
+    #saleDetails {
+        padding: 0px;
+        margin-top: 20px;
+    }
+
+    .respActions button {
+        width: 50%;
+    }
+
+    .respActions button:last-child {
+        margin: 0px;
+    }
+
+    #contentFinalizacion {
+        margin-top: 48px !important;
+    }
+
+    .firstExpansionPanel {
+        margin-top: 15px !important;
+    }
+
+    .firstExpansionPanel mat-expansion-panel-header:not(.mat-expanded) {
+        height: 130px !important;
+    }
+
+    .buscarContainer {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 377px) {
+    #medioPagoCointainer .mat-radio-button ~ .mat-radio-button:last-child {
+        margin-left: 0px;
+    }
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+
+.shake {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+.noShake {
+    animation: none;
+}
+  
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}

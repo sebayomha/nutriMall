@@ -1,0 +1,168 @@
+<div class="loginContainer">
+  <!--left side -->
+  <div *ngIf="!isMobile()" class="col-7 imageContainer" style="height: 100%; display: inline-block;">
+    <div class="welcomeMessage">
+      Bienvenido a NutriMall
+    </div>
+  </div>
+  <!-- right side -->
+  <div class="col-12 col-md-5" style="height: 100%; display: inline-block; padding: 0px;">
+    <div class="flip-card">
+          
+      <div [@flipState]="flip" class="flip-card-inner" style="border-radius: 5px;">
+  <!--       <img src="/assets/img/logo.png" style="border-radius: 50%;" class="avatar" alt="Avatar Image" *ngIf="!showNewPasswordBox && !dontRememberPass">
+  --> 
+
+          <!-- LOGIN BOX -->
+          <div class="tp-box__front" id="FormLoginBox" *ngIf="!showNewPasswordBox && !dontRememberPass">
+            <div id="passwordImageContainer">
+              <img src="assets/img/nutriMall.png" style="width: 150px; height: 150px; border-radius: 50%;">
+            </div>
+            
+            <form id="loginForm" #loginForm="ngForm" (submit)="loginForm.form.valid && onSubmit()">
+              <mat-form-field hideRequiredMarker style="width: 100%;">      
+                <input matInput (input)="errorMsg = ''" #email="ngModel" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" style="background: transparent;" type="email" [(ngModel)]="user.email" name="email" id="email" aria-describedby="emailHelp" placeholder="Email" required>
+              </mat-form-field>
+              <div *ngIf="(email.errors && email.touched && !email.pristine) || submitted ">
+                <div class="help-text text-danger" *ngIf="email.errors?.required" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese un correo electrónico
+                </div>
+                <div class="help-text text-danger" *ngIf="email.errors?.pattern" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese un correo electrónico valido
+                </div>
+                <div class="help-text text-danger" *ngIf="email.errors?.maxlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                    Por favor, ingrese como máximo {{email.errors.maxlength.requiredLength}} caracteres
+                  </div>
+              </div>
+
+              <mat-form-field hideRequiredMarker style="width: 100%; margin-top: 15px;">
+                <input autocomplete="on" (input)="errorMsg = ''" matInput #password="ngModel" minlength="8" maxlength="16" [type]="showPass ? 'text':'password'" [(ngModel)]="user.password" style="border-bottom:none; height: 18px;" name="password" id="password" placeholder="Contraseña" required>
+                <button tabIndex="-1" type="button" mat-button (click)="showPassword()" matSuffix mat-icon-button style="cursor: pointer; font-size: 22px; color: #43c89d;">
+                  <mat-icon *ngIf="!showPass">visibility</mat-icon>
+                  <mat-icon *ngIf="showPass">visibility_off</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <div *ngIf="(password.errors && password.touched && !password.pristine) || submitted ">
+                <div class="help-text text-danger" *ngIf="password.errors?.required" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese una contraseña
+                </div>
+                <div class="help-text text-danger" *ngIf="password.errors?.minlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese como mínimo {{password.errors.minlength.requiredLength}} caracteres
+                </div>
+                <div class="help-text text-danger" *ngIf="password.errors?.maxlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                    Por favor, ingrese como máximo {{password.errors.maxlength.requiredLength}} caracteres
+                  </div>
+                <div class="help-text text-danger" *ngIf="errorMsg != ''" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 10px;">
+                  {{errorMsg}}
+                </div>
+              </div>
+
+              <button mat-button type="submit" (click)="submitted = true" class="loginSubmit" style="margin-bottom:5px; width: 100%;">INICIAR SESIÓN</button>
+
+              <div style="position: fixed; top: 460px; left: 50%; transform: translateX(-50%); width: 90%; margin-bottom: 10px;">
+                <div style="text-align: center">
+                  <small (click)="dontRememberPassword()" style="cursor: pointer; text-align: center; color: #43c89d;">Olvidé mi contraseña</small>
+                </div>
+              </div>
+            </form>
+          </div>
+        
+          <!-- PRIMER CAMBIO DE CONTRASEÑA BOX -->
+          <div class="tp-box__back" id="FormNewPasswordBox" *ngIf="showNewPasswordBox">
+            <div id="passwordImageContainer">
+              <img src="assets/img/firstPasswordChange.png" style="width: 150px; height: 150px;">
+            </div>
+            <h4 class="title" style="text-align: center;">
+              <p>Bienvenido {{userData.name | capitalize}}!</p>
+            </h4>
+              <p class="forgotPassworHelp">Por ser tu primer ingreso en NutriMall es necesario que cambies tu contraseña.</p>
+            <form #formNewPassword="ngForm" id="formNewPassword" (submit)="formNewPassword.valid && submitFirstPassword()">
+              <mat-form-field hideRequiredMarker style="width: 100%; margin-top: 15px;">
+                <input (input)="checkRepeatedPasswords()" matInput #newPasswordModel="ngModel" minlength="8" maxlength="16" [type]="showPass ? 'text':'password'" [(ngModel)]="newPassword" style="border-bottom:none; height: 18px;" name="newPassword" id="newPassword" placeholder="Contraseña" required>
+                <button tabIndex="-1" type="button" mat-button (click)="showPassword()" matSuffix mat-icon-button style="cursor: pointer; font-size: 22px; color: #43c89d;">
+                  <mat-icon *ngIf="!showPass">visibility</mat-icon>
+                  <mat-icon *ngIf="showPass">visibility_off</mat-icon>
+                </button>
+              </mat-form-field>
+              <div *ngIf="(newPasswordModel.errors && newPasswordModel.touched && !newPasswordModel.pristine) || submitted ">
+                <div class="help-text text-danger" *ngIf="newPasswordModel.errors?.required" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese una contraseña
+                </div>
+                <div class="help-text text-danger" *ngIf="newPasswordModel.errors?.minlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese como mínimo {{newPasswordModel.errors.minlength.requiredLength}} caracteres
+                </div>
+                <div class="help-text text-danger" *ngIf="newPasswordModel.errors?.maxlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese como máximo {{newPasswordModel.errors.maxlength.requiredLength}} caracteres
+                </div>
+                <div class="help-text text-danger" *ngIf="errorMsg != ''" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 10px;">
+                  {{errorMsg}}
+                </div>
+              </div>
+
+              <mat-form-field hideRequiredMarker style="width: 100%; margin-top: 15px;">
+                <input (input)="checkRepeatedPasswords()" matInput #newPasswordRepeatModel="ngModel" minlength="8" maxlength="16" [type]="showRepeatPass ? 'text':'password'" [(ngModel)]="newPasswordRepeat" style="border-bottom:none; height: 18px;" name="newPasswordRepeat" id="newPasswordRepeat" placeholder="Repetir contraseña" required>
+                <button tabIndex="-1" type="button" mat-button (click)="showRepeatPassword()" matSuffix mat-icon-button style="cursor: pointer; font-size: 22px; color: #43c89d;">
+                  <mat-icon *ngIf="!showRepeatPass">visibility</mat-icon>
+                  <mat-icon *ngIf="showRepeatPass">visibility_off</mat-icon>
+                </button>
+              </mat-form-field>
+              <div *ngIf="(newPasswordRepeatModel.errors && newPasswordRepeatModel.touched && !newPasswordRepeatModel.pristine) || submitted ">
+                <div class="help-text text-danger" *ngIf="newPasswordRepeatModel.errors?.required" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese una contraseña
+                </div>
+                <div class="help-text text-danger" *ngIf="newPasswordRepeatModel.errors?.minlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese como mínimo {{newPasswordRepeatModel.errors.minlength.requiredLength}} caracteres
+                </div>
+                <div class="help-text text-danger" *ngIf="newPasswordRepeatModel.errors?.maxlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese como máximo {{newPasswordRepeatModel.errors.maxlength.requiredLength}} caracteres
+                </div>
+              </div>
+
+              <div class="help-text text-danger" *ngIf="notMatchedPasswords" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                Las contraseñas deben coincidir
+              </div>
+
+              <!-- <password-strength-meter [password]="newPasswordModel.value"></password-strength-meter> -->
+
+              <button mat-button style="width: 48%; margin-right: 2%; background: #e4dede;" (click)="showPass = false; showNewPassBox()" type="button">CANCELAR</button>
+              <button mat-button style="width: 48%; margin-left: 2%;" (click)="submitted = true" type="submit" class="loginSubmit">CONFIRMAR</button>
+            </form>
+          </div>
+
+          <!-- OLVIDE MI CONTRASEÑA BOX -->
+          <div id="dontRememberPassBox" *ngIf="dontRememberPass" style="padding: 50px 25px;">
+            <div id="passwordImageContainer">
+              <img src="assets/img/forgotPassword.png" style="width: 150px; height: 150px; margin-left: 30px;">
+            </div>
+            <h4 class="forgotPassworTitle">
+              <span>Olvidaste tu contraseña?</span>
+            </h4>
+            <p class="forgotPassworHelp">No te preocupes, ingresá tu Email y te enviaremos un link para recuperar tu contraseña !</p>
+            <form style="margin-top: 40px;" id="formForgotPassword" #dontRememberPassForm="ngForm" (submit)="dontRememberPassForm.valid && forgotPasswordSubmit()">
+              <mat-form-field hideRequiredMarker style="width: 100%;">      
+                <input matInput #forgotPasswordEmailModel="ngModel" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" style="background: transparent;" type="email" [(ngModel)]="forgotPasswordEmail" name="email" id="email" aria-describedby="emailHelp" placeholder="Email" required>
+              </mat-form-field>
+              <div *ngIf="(forgotPasswordEmailModel.errors && forgotPasswordEmailModel.touched && !forgotPasswordEmailModel.pristine) || submittedForgotPassword">
+                <div class="help-text text-danger" *ngIf="forgotPasswordEmailModel.errors?.required" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese un correo electrónico
+                </div>
+                <div class="help-text text-danger" *ngIf="forgotPasswordEmailModel.errors?.pattern" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                  Por favor, ingrese un correo electrónico valido
+                </div>
+                <div class="help-text text-danger" *ngIf="forgotPasswordEmailModel.errors?.maxlength" style="font-size: 13px; font-weight:500; margin-top: -15px; margin-bottom: 25px;">
+                    Por favor, ingrese como máximo {{forgotPasswordEmailModel.errors.maxlength.requiredLength}} caracteres
+                  </div>
+              </div>
+
+              <button mat-button style="width: 48%; margin-right: 2%; background: #e4dede;" (click)="goToLogin()" type="button">CANCELAR</button>
+              <button mat-button style="width: 48%; margin-left: 2%;" type="submit" (click)="submittedForgotPassword = true;" class="loginSubmit">ENVIAR EMAIL</button>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div id="copyRightFooter" *ngIf="!dontRememberPass">
+    &copy; 2020 Sebastián Yomha
+  </div>
+</div>

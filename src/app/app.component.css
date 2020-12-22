@@ -1,0 +1,30 @@
+.drawerMain {
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    top: 0px;
+}
+
+::ng-deep button {
+    outline: none !important;
+}
+
+mat-drawer-content {
+    overflow: hidden !important;
+}
+
+::ng-deep .mat-radio-inner-circle, ::ng-deep button.mat-primary.mat-raised-button, ::ng-deep mat-ink-bar, ::ng-deep .mat-step-header .mat-step-icon {
+    background-color: #439f82 !important;
+}
+
+::ng-deep button.mat-primary:not(.mat-raised-button), ::ng-deep .mat-form-field.mat-focused.ng-untouched .mat-form-field-label, ::ng-deep .mat-form-field.mat-focused.ng-valid .mat-form-field-label, #salesForm .mat-form-field-label, ::ng-deep #saleDetails .mat-form-field-label {
+    color: #439f82;
+}
+
+::ng-deep .mat-radio-outer-circle {
+    border-color: #439f82 !important;
+}
+
+::ng-deep .mat-form-field.mat-focused.ng-untouched .mat-form-field-ripple, ::ng-deep .mat-form-field.mat-focused.ng-valid .mat-form-field-ripple, #salesForm .mat-form-field-ripple, ::ng-deep #saleDetails .mat-form-field-ripple {
+    background-color: #439f82;
+}
